@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using NAudio.Midi;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using UnityEngine;
@@ -15,14 +16,16 @@ namespace Ceoil
 
         bool isHoldingSpace = false;
 
-        void Play(float frequency = 440.0f, int length=1000)
+        void Play(Note note, int length=1000)
         {
             Thread thread = new Thread(() =>
             {
+                Debug.Log($"Playing {signalType} tone: {note} for {length}ms");
+                
                 SignalGenerator signal = new SignalGenerator()
                 {
                     Gain = gain,
-                    Frequency = frequency,
+                    Frequency = note.Frequency,
                     Type = signalType,
                 };
 
@@ -47,7 +50,7 @@ namespace Ceoil
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Play(Random.Range(300.0f, 500.0f), toneLength);
+                Play(Note.B3, toneLength);
             }
         }
     }
